@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Testbench_PwmController_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="Testbench_PwmController" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="1,601.000001 us"></ZoomEndTime>
+      <Cursor1Time time="1,000.495000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="202"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="12" />
+   <wave_markers>
+      <marker label="" time="501295000" />
+   </wave_markers>
+   <wvobject type="other" fp_name="/Testbench_PwmController/uut/SYSTEM_CLOCK_PERIOD">
+      <obj_property name="ElementShortName">SYSTEM_CLOCK_PERIOD</obj_property>
+      <obj_property name="ObjectShortName">SYSTEM_CLOCK_PERIOD</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/Testbench_PwmController/uut/PWM_RESOLUTION_MAX_VALUE">
+      <obj_property name="ElementShortName">PWM_RESOLUTION_MAX_VALUE</obj_property>
+      <obj_property name="ObjectShortName">PWM_RESOLUTION_MAX_VALUE</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/Testbench_PwmController/uut/PWM_MAX_CLOCK_DIVIDER">
+      <obj_property name="ElementShortName">PWM_MAX_CLOCK_DIVIDER</obj_property>
+      <obj_property name="ObjectShortName">PWM_MAX_CLOCK_DIVIDER</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Testbench_PwmController/uut/i_sys_clock">
+      <obj_property name="ElementShortName">i_sys_clock</obj_property>
+      <obj_property name="ObjectShortName">i_sys_clock</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Testbench_PwmController/uut/i_reset">
+      <obj_property name="ElementShortName">i_reset</obj_property>
+      <obj_property name="ObjectShortName">i_reset</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Testbench_PwmController/uut/i_duty_cycle">
+      <obj_property name="ElementShortName">i_duty_cycle[8:0]</obj_property>
+      <obj_property name="ObjectShortName">i_duty_cycle[8:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Testbench_PwmController/uut/duty_cycle_reg">
+      <obj_property name="ElementShortName">duty_cycle_reg[8:0]</obj_property>
+      <obj_property name="ObjectShortName">duty_cycle_reg[8:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/Testbench_PwmController/uut/pwm_clock_divider">
+      <obj_property name="ElementShortName">pwm_clock_divider</obj_property>
+      <obj_property name="ObjectShortName">pwm_clock_divider</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Testbench_PwmController/uut/pwm_clock_enable">
+      <obj_property name="ElementShortName">pwm_clock_enable</obj_property>
+      <obj_property name="ObjectShortName">pwm_clock_enable</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Testbench_PwmController/uut/pwm_counter">
+      <obj_property name="ElementShortName">pwm_counter[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pwm_counter[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Testbench_PwmController/uut/o_next_duty_cycle_trigger">
+      <obj_property name="ElementShortName">o_next_duty_cycle_trigger</obj_property>
+      <obj_property name="ObjectShortName">o_next_duty_cycle_trigger</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Testbench_PwmController/uut/o_pwm">
+      <obj_property name="ElementShortName">o_pwm</obj_property>
+      <obj_property name="ObjectShortName">o_pwm</obj_property>
+   </wvobject>
+</wave_config>
