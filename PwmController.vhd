@@ -87,7 +87,7 @@ begin
 	begin
 		pwm_output_freq_min := real(pwm_output_freq) - real(pwm_output_freq_error);
 		pwm_output_freq_max := real(pwm_output_freq) + real(pwm_output_freq_error);
-		pwm_output_freq_actual := ( real(1) / ( real(PWM_RESOLUTION_MAX_VALUE) * SYSTEM_CLOCK_PERIOD * real(PWM_MAX_CLOCK_DIVIDER) ) );
+		pwm_output_freq_actual := ( real(1) / ( real(PWM_RESOLUTION_MAX_VALUE) * SYSTEM_CLOCK_PERIOD * real(PWM_MAX_CLOCK_DIVIDER+1) ) );
 		
 		assert (pwm_output_freq_min <= pwm_output_freq_actual) and (pwm_output_freq_actual <= pwm_output_freq_max)
 		report
