@@ -52,7 +52,7 @@ END component;
 
 signal sys_clock: STD_LOGIC := '0';
 signal reset: STD_LOGIC := '0';
-signal duty_cycle: unsigned(7 downto 0) := (others => '0');
+signal duty_cycle: unsigned(8 downto 0) := (others => '0');
 signal next_duty_cycle_trigger: STD_LOGIC := '0';
 signal pwm_out: STD_LOGIC := '0';
 
@@ -65,14 +65,14 @@ sys_clock <= not(sys_clock) after 5 ns;
 reset <= '1', '0' after 145 ns;
 
 -- Duty Cycle
-duty_cycle <= "00000111", "11111110" after 496 us;
+duty_cycle <= "000000111", "000000000" after 496 us, "011111111" after 800 us, "100000000" after 1000 us;
 
 uut: PwmController
     GENERIC map(
         sys_clock => 100_000_000,
-        pwm_output_freq => 200,
+        pwm_output_freq => 2000,
         pwm_output_freq_error => 500,
-        pwm_resolution => 7
+        pwm_resolution => 8
     )
     PORT map(
         i_sys_clock => sys_clock,
