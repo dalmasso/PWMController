@@ -51,7 +51,7 @@ ARCHITECTURE Behavioral of PwmController is
 -- Constant Declarations
 ------------------------------------------------------------------------
 -- System Clock Period
-constant SYSTEM_CLOCK_PERIOD: REAL := real(1) / real(sys_clock) ;
+constant SYSTEM_CLOCK_PERIOD: REAL := real(1) / real(sys_clock);
 
 -- PWM Resolution Max Value
 constant PWM_RESOLUTION_MAX_VALUE: INTEGER := 2**pwm_resolution;

@@ -29,9 +29,9 @@ USE IEEE.NUMERIC_STD.ALL;
 entity Testbench_PwmController is
 end Testbench_PwmController;
 
-architecture Behavioral of Testbench_PwmController is
+ARCHITECTURE Behavioral of Testbench_PwmController is
 
-component PwmController is
+COMPONENT PwmController is
 
     GENERIC(
         sys_clock: INTEGER := 100_000_000;
@@ -48,12 +48,11 @@ component PwmController is
         o_pwm: OUT STD_LOGIC
     );
     
-END component;
+END COMPONENT;
 
 signal sys_clock: STD_LOGIC := '0';
 signal reset: STD_LOGIC := '0';
-signal duty_cycle: UNSIGNED(8 downto 0) := (others => '0');
-signal next_duty_cycle_trigger: STD_LOGIC := '0';
+signal duty_cycle: STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
 signal pwm_out: STD_LOGIC := '0';
 
 begin
