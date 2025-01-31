@@ -52,7 +52,7 @@ END component;
 
 signal sys_clock: STD_LOGIC := '0';
 signal reset: STD_LOGIC := '0';
-signal duty_cycle: unsigned(8 downto 0) := (others => '0');
+signal duty_cycle: UNSIGNED(8 downto 0) := (others => '0');
 signal next_duty_cycle_trigger: STD_LOGIC := '0';
 signal pwm_out: STD_LOGIC := '0';
 
