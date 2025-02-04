@@ -3,17 +3,17 @@
 -- Create Date: 28/01/2025
 -- Module Name: PwmController
 -- Description:
---      PWM Controller fixing the PWM Output Frequency (Hz) and the PWM Resolution (in bits).
+--      PWM Controller with configurable PWM Resolution (in bits), PWM Signal Output Frequency (Hz) and PWM Signal Output Frequency Error Range (Hz).
 --		The size of the Duty Cycle input is 1-bit greater than the PWM Resolution to handle 100% Duty Cycle.
---		The Duty Cyle value is dynamic but the new value will be applied only at the end of the PWM cycle (when Next Duty Cycle Trigger is enable).
+--		The Duty Cyle value is dynamic but the new value will be applied only at the end of the PWM Duty Cycle Period (when Next Duty Cycle Trigger is enable).
 --		User MUST carefully select generic parameters to satisfy PWM Output Frequency & Accuracy. Otherwise, assertion will be throw.
 --		User can fix a Range of valid PWM Frequency Output.
 --
 -- Generics
 --		sys_clock: System Input Clock Frequency (Hz)
---		pwm_output_freq: PWM Output Frequency (Hz)
---		pwm_output_freq_error: Range of PWM Output Frequency Error (Hz)
 --		pwm_resolution: PWM Resolution (Bits)
+--		signal_output_freq: PWM Signal Output Frequency (Hz)
+--		signal_output_freq_error: Range of PWM Signal Output Error Range (Hz)
 -- Ports
 --		Input 	-	i_sys_clock: System Input Clock
 --		Input 	-	i_reset: Reset ('0': No Reset, '1': Reset)
@@ -26,29 +26,29 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
-entity Testbench_PwmController is
-end Testbench_PwmController;
+ENTITY Testbench_PwmController is
+END Testbench_PwmController;
 
-architecture Behavioral of Testbench_PwmController is
+ARCHITECTURE Behavioral of Testbench_PwmController is
 
-component PwmController is
+COMPONENT PwmController is
 
-    GENERIC(
-        sys_clock: INTEGER := 100_000_000;
-        pwm_output_freq: INTEGER := 2_000;
-        pwm_output_freq_error: INTEGER := 500;
-        pwm_resolution: INTEGER := 8
-    );
+GENERIC(
+	sys_clock: INTEGER := 100_000_000;
+	pwm_resolution: INTEGER := 8;
+	signal_output_freq: INTEGER := 20_000;
+	signal_output_freq_error: INTEGER := 500
+);
+
+PORT(
+	i_sys_clock: IN STD_LOGIC;
+    i_reset: IN STD_LOGIC;
+	i_duty_cycle: IN UNSIGNED(pwm_resolution downto 0);
+	o_next_duty_cycle_trigger: OUT STD_LOGIC;
+	o_pwm: OUT STD_LOGIC
+);
     
-    PORT(
-        i_sys_clock: IN STD_LOGIC;
-        i_reset: IN STD_LOGIC;
-        i_duty_cycle: IN UNSIGNED(pwm_resolution downto 0);
-        o_next_duty_cycle_trigger: OUT STD_LOGIC;
-        o_pwm: OUT STD_LOGIC
-    );
-    
-END component;
+END COMPONENT;
 
 signal sys_clock: STD_LOGIC := '0';
 signal reset: STD_LOGIC := '0';
@@ -65,14 +65,14 @@ sys_clock <= not(sys_clock) after 5 ns;
 reset <= '1', '0' after 145 ns;
 
 -- Duty Cycle
-duty_cycle <= "000000111", "000000000" after 496 us, "011111111" after 800 us, "100000000" after 1000 us;
+duty_cycle <= "000000111", "000000000" after 496 us, "011111111" after 800 us, "100000000" after 1300 us;
 
 uut: PwmController
     GENERIC map(
         sys_clock => 100_000_000,
-        pwm_output_freq => 2000,
-        pwm_output_freq_error => 500,
-        pwm_resolution => 8
+        pwm_resolution => 8,
+        signal_output_freq => 7,
+        signal_output_freq_error => 1
     )
     PORT map(
         i_sys_clock => sys_clock,

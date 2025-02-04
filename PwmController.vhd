@@ -3,17 +3,17 @@
 -- Create Date: 28/01/2025
 -- Module Name: PwmController
 -- Description:
---      PWM Controller fixing the PWM Output Frequency (Hz) and the PWM Resolution (in bits).
+--      PWM Controller with configurable PWM Resolution (in bits), PWM Signal Output Frequency (Hz) and PWM Signal Output Frequency Error Range (Hz).
 --		The size of the Duty Cycle input is 1-bit greater than the PWM Resolution to handle 100% Duty Cycle.
---		The Duty Cyle value is dynamic but the new value will be applied only at the end of the PWM cycle (when Next Duty Cycle Trigger is enable).
+--		The Duty Cyle value is dynamic but the new value will be applied only at the end of the PWM Duty Cycle Period (when Next Duty Cycle Trigger is enable).
 --		User MUST carefully select generic parameters to satisfy PWM Output Frequency & Accuracy. Otherwise, assertion will be throw.
 --		User can fix a Range of valid PWM Frequency Output.
 --
 -- Generics
 --		sys_clock: System Input Clock Frequency (Hz)
---		pwm_output_freq: PWM Output Frequency (Hz)
---		pwm_output_freq_error: Range of PWM Output Frequency Error (Hz)
 --		pwm_resolution: PWM Resolution (Bits)
+--		signal_output_freq: PWM Signal Output Frequency (Hz)
+--		signal_output_freq_error: Range of PWM Signal Output Error Range (Hz)
 -- Ports
 --		Input 	-	i_sys_clock: System Input Clock
 --		Input 	-	i_reset: Reset ('0': No Reset, '1': Reset)
@@ -30,9 +30,9 @@ ENTITY PwmController is
 
 GENERIC(
 	sys_clock: INTEGER := 100_000_000;
-	pwm_output_freq: INTEGER := 2_000;
-	pwm_output_freq_error: INTEGER := 500;
-	pwm_resolution: INTEGER := 8
+	pwm_resolution: INTEGER := 8;
+	signal_output_freq: INTEGER := 7;
+	signal_output_freq_error: INTEGER := 1
 );
 
 PORT(
@@ -56,8 +56,11 @@ constant SYSTEM_CLOCK_PERIOD: REAL := real(1) / real(sys_clock);
 -- PWM Resolution Max Value
 constant PWM_RESOLUTION_MAX_VALUE: INTEGER := 2**pwm_resolution;
 
+-- PWM Duty Cycle Frequency
+constant PWM_DUTY_CYCLE_FREQUENCY: INTEGER := INTEGER( PWM_RESOLUTION_MAX_VALUE * signal_output_freq);
+
 -- PWM Max Clock Divider
-constant PWM_MAX_CLOCK_DIVIDER: INTEGER := INTEGER( real(1) / (real(PWM_RESOLUTION_MAX_VALUE) * SYSTEM_CLOCK_PERIOD * real(pwm_output_freq)) );
+constant PWM_MAX_CLOCK_DIVIDER: INTEGER := INTEGER( real(1) / (real(PWM_RESOLUTION_MAX_VALUE) * SYSTEM_CLOCK_PERIOD * real(PWM_DUTY_CYCLE_FREQUENCY) ) );
 
 ------------------------------------------------------------------------
 -- Signal Declarations
@@ -81,20 +84,22 @@ begin
 	-- PWM Frequency Output Configuration Assertion --
 	--------------------------------------------------
 	process
-	variable pwm_output_freq_min: real;
-	variable pwm_output_freq_max: real;
-	variable pwm_output_freq_actual: real;
+	variable duty_cycle: real;
+	variable signal_output_freq_min: real;
+	variable signal_output_freq_max: real;
+	variable signal_output_freq_actual: real;
 	begin
-		pwm_output_freq_min := real(pwm_output_freq) - real(pwm_output_freq_error);
-		pwm_output_freq_max := real(pwm_output_freq) + real(pwm_output_freq_error);
-		pwm_output_freq_actual := ( real(1) / ( real(PWM_RESOLUTION_MAX_VALUE) * SYSTEM_CLOCK_PERIOD * real(PWM_MAX_CLOCK_DIVIDER+1) ) );
+		duty_cycle := ( real(1) / ( real(PWM_RESOLUTION_MAX_VALUE) * SYSTEM_CLOCK_PERIOD * (real(PWM_MAX_CLOCK_DIVIDER) + 1.0) ) );
+		signal_output_freq_min := real(signal_output_freq) - real(signal_output_freq_error);
+		signal_output_freq_max := real(signal_output_freq) + real(signal_output_freq_error);
+		signal_output_freq_actual := ( duty_cycle / real(PWM_RESOLUTION_MAX_VALUE) );
 		
-		assert (pwm_output_freq_min <= pwm_output_freq_actual) and (pwm_output_freq_actual <= pwm_output_freq_max)
+		assert (signal_output_freq_min <= signal_output_freq_actual) and (signal_output_freq_actual <= signal_output_freq_max)
 		report
 				"PWM Module Configuration Failure !" & LF &
-				"PWM Output Freq Min: " & real'image(real(pwm_output_freq_min)) & LF &
-				"PWM Output Freq Max: " & real'image(real(pwm_output_freq_max)) & LF &
-				"PWM Output Freq Actual: " & real'image(real(pwm_output_freq_actual))
+				"Signal Output Freq Min: " & real'image(real(signal_output_freq_min)) & LF &
+				"Signal Output Freq Max: " & real'image(real(signal_output_freq_max)) & LF &
+				"Actual Signal Output Freq: " & real'image(real(signal_output_freq_actual))
 		severity FAILURE;
 		wait;
 	end process;
